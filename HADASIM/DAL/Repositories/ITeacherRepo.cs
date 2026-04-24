@@ -10,7 +10,7 @@ namespace DAL.Repositories
     public interface ITeacherRepo
     {
         Task Add(Teacher teacher);
-        IEnumerable<Teacher> GetAll();
-        Teacher? GetById(string id);
+        Task<List<Teacher>> GetAll();
+        Task<Teacher?> GetById(string id);
     }
 }

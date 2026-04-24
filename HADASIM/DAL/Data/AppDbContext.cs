@@ -12,5 +12,18 @@ namespace DAL.Data
 
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Student> Students { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Student>()
+                .HasIndex(s => s.IdNumber)
+                .IsUnique();
+
+            modelBuilder.Entity<Teacher>()
+                .HasIndex(t => t.IdNumber)
+                .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

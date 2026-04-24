@@ -10,9 +10,11 @@ namespace DAL.Repositories
     public interface IStudentRepo
     {
         Task Add(Student student);
-        IEnumerable<Student> GetAll();
-        Student? GetById(string id);
-        IEnumerable<Student> GetByClass(string className);
+        Task<List<Student>> GetAll();
+        Task<Student?> GetById(string id);
+        Task<List<Student>> GetByClass(string className);
 
     }
+
+
 }

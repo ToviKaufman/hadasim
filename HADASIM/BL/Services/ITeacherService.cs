@@ -11,7 +11,7 @@ namespace BL.Services
     public interface ITeacherService
     {
         Task Add(TeacherDTO teacherDTO);
-        IEnumerable<TeacherDTO> GetAll();
-        TeacherDTO? GetById(string id);
+        Task<List<TeacherDTO>> GetAll();
+        Task<TeacherDTO?> GetById(string id);
     }
 }

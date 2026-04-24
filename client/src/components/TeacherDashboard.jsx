@@ -61,7 +61,6 @@ function TeacherDashboard({ className }) {
         תלמידים בכיתה שלי
       </label>
 
-      {/* הצגת הרשימה */}
       {users?.length > 0 && <UserList users={users} />}
       
     </div>

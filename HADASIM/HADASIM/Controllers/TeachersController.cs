@@ -26,17 +26,16 @@ namespace Hadasim.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var teachers = _service.GetAll();
+            var teachers = await _service.GetAll();
             return Ok(teachers);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            var teacher = _service.GetById(id);
-            //if (teacher == null) return NotFound();
+            var teacher = await _service.GetById(id);
             return Ok(teacher);
         }
 

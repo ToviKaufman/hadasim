@@ -25,18 +25,18 @@ namespace DAL.Repositories
 
         }
 
-        public IEnumerable<Student> GetAll()
+        public async Task<List<Student>> GetAll()
         {
-            return _context.Students;
+            return await _context.Students.ToListAsync();
         }
 
-        public Student? GetById(string id)
+        public async Task<Student?> GetById(string id)
         {
-            return _context.Students.FirstOrDefault(t => t.IdNumber == id);
+            return await _context.Students.FirstOrDefaultAsync(t => t.IdNumber == id);
         }
-        public IEnumerable<Student> GetByClass(string className)
+        public async Task<List<Student>> GetByClass(string className)
         {
-            return _context.Students.Where(t => t.ClassName == className);
+            return await _context.Students.Where(t => t.ClassName == className).ToListAsync();
         }
     }
 }

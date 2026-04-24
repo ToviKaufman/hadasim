@@ -4,9 +4,6 @@ function UserList({ users }) {
 
   return (
     <div>
-      
-
-     
         <ul>
           {users.map((user) => (
             <li key={user.id}>
@@ -14,7 +11,6 @@ function UserList({ users }) {
             </li>
           ))}
         </ul>
-      
     </div>
   );
 }

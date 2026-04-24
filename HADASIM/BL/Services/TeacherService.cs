@@ -36,16 +36,17 @@ namespace BL.Services
         }
 
 
-        public IEnumerable<TeacherDTO> GetAll()
+        public async Task<List<TeacherDTO>> GetAll()
         {
 
-            return _repo.GetAll().Select(item => item.ToDto());
+            var teachers = await _repo.GetAll();
+            return teachers.Select(item => item.ToDto()).ToList();
         }
 
-        public TeacherDTO? GetById(string id)
+        public async Task<TeacherDTO?> GetById(string id)
         {
-            return _repo.GetById(id)?.ToDto();
-
+            var teacher = await _repo.GetById(id);
+            return teacher?.ToDto();
         }
     }
 }

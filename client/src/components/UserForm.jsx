@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { addTeacher } from "../services/teacherService";
 import { addStudent } from "../services/studentService";
-
 import TeacherDashboard from "./TeacherDashboard";
-
-
 
 
 function UserForm({ user, id }) {
@@ -12,65 +9,79 @@ function UserForm({ user, id }) {
 
   const [name, setName] = useState(user?.fullName || "");
   const [className, setClassName] = useState(user?.className || "");
-
+  const [errors, setErrors] = useState({});
   const [userType, setUserType] = useState(user?.type || "");
+  const [createdUser, setCreatedUser] = useState(null);
 
   const handleSubmit = async () => {
+
+    const newErrors = {};
+
+    if (!name.trim()) {
+      newErrors.name = "שם הוא שדה חובה";
+    }
+    if (!className.trim()) {
+      newErrors.className = "כיתה היא שדה חובה";
+    }
+    if (!userType) {
+      newErrors.userType = "חובה לבחור תלמיד או מורה";
+    }
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
     const data = {
       id,
-      fullName:name,
+      fullName: name,
       className: className,
     };
 
-
-    if (userType === "teacher") {
+    try {
+      if (userType === "teacher") {
         await addTeacher(data);
-    } else if (userType === "student") {
+      } else {
         await addStudent(data);
-    } else {
-      alert("יש לבחור סוג משתמש");
-      return;
+      }
+      setCreatedUser({ ...data, type: userType });
+    } catch (err) {
+      setCreatedUser(null);
+      alert("השמירה נכשלה");
     }
-
   };
 
   return (
     <div>
       <h3>{isNew ? "רישום" : "פרטי משתמש"}</h3>
 
-      {/* ת"ז */}
       <input value={id} disabled />
 
-      {/* שם */}
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
         disabled={!isNew}
-        placeholder="שם"
+        required
+        placeholder="שם מלא"
       />
-
-      {/* כיתה */}
+      {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
       <input
         value={className}
         onChange={(e) => setClassName(e.target.value)}
         disabled={!isNew}
+        required
         placeholder="כיתה"
       />
-
-      {/* סוג משתמש - רק ברישום */}
+      {errors.className && <p style={{ color: "red" }}>{errors.className}</p>}
       {isNew && (
         <div>
           <label>
             <input
               type="radio"
-                name="userType"
-
+              name="userType"
               value="student"
               checked={userType === "student"}
-             onChange={(e) => {
-  console.log(e.target.value);
-  setUserType(e.target.value);
-}}
+              onChange={(e) => {
+                console.log(e.target.value);
+                setUserType(e.target.value);
+              }}
             />
             תלמיד
           </label>
@@ -78,38 +89,31 @@ function UserForm({ user, id }) {
           <label>
             <input
               type="radio"
-                name="userType"
-
+              name="userType"
               value="teacher"
               checked={userType === "teacher"}
               onChange={(e) => {
-  console.log(e.target.value);
-  setUserType(e.target.value);
-}}
+                console.log(e.target.value);
+                setUserType(e.target.value);
+              }}
             />
             מורה
           </label>
         </div>
       )}
+      {errors.userType && <p style={{ color: "red" }}>{errors.userType}</p>}
 
-      {/* צ'קבוקס
-      <label>
-        <input
-          type="checkbox"
-          checked={isTrip}
-          onChange={(e) => setIsTrip(e.target.checked)}
-        />
-        משתתף בטיול
-      </label> */}
-
-     {isNew && (
-      <button onClick={handleSubmit}>
-        עדכון
-      </button>)}
-
-     {userType === "teacher" && !isNew && (
-  <TeacherDashboard className={user.className} />
-)}
+      {isNew && !createdUser && (
+        <button onClick={handleSubmit}>
+          עדכון
+        </button>
+      )}
+      {createdUser && (
+        <p style={{ color: "green" }}> המשתמש נשמר בהצלחה </p>
+      )}
+      {(createdUser?.type === "teacher" || user?.type === "teacher") && (
+        <TeacherDashboard className={createdUser?.className || user?.className} />
+      )}
     </div>
   );
 }

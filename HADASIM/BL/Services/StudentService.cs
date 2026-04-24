@@ -34,20 +34,23 @@ namespace BL.Services
         }
 
 
-        public IEnumerable<StudentDTO> GetAll()
+        public async Task<List<StudentDTO>> GetAll()
         {
 
-            return _repo.GetAll().Select(item => item.ToDto());
+            var students = await _repo.GetAll();
+            return students.Select(item => item.ToDto()).ToList();
         }
 
-        public StudentDTO? GetById(string id)
+        public async Task<StudentDTO?> GetById(string id)
         {
-            return _repo.GetById(id)?.ToDto();
+            var student = await _repo.GetById(id);
+            return student?.ToDto();
 
         }
-        public IEnumerable<StudentDTO> GetByClass(string className)
+        public async Task<List<StudentDTO>> GetByClass(string className)
         {
-            return _repo.GetByClass(className).Select(item => item.ToDto());
+            var students = await _repo.GetByClass(className);
+            return students.Select(item => item.ToDto()).ToList();
 
         }
     }
