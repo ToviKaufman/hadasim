@@ -2,6 +2,8 @@ import { useState } from "react";
 import { addTeacher } from "../services/teacherService";
 import { addStudent } from "../services/studentService";
 import TeacherDashboard from "./TeacherDashboard";
+import "../App.css";
+
 
 
 function UserForm({ user, id }) {
@@ -49,30 +51,32 @@ function UserForm({ user, id }) {
   };
 
   return (
-    <div>
-      <h3>{isNew ? "רישום" : "פרטי משתמש"}</h3>
+    <div className="form-container">
+      <h3 className="title">{isNew ? "רישום" :  "פרטי משתמש"}</h3>
 
-      <input value={id} disabled />
+      <input className="input" value={id} disabled />
 
       <input
+        className="input"
         value={name}
         onChange={(e) => setName(e.target.value)}
         disabled={!isNew}
         required
         placeholder="שם מלא"
       />
-      {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
+      {errors.name && <p className="error-text">{errors.name}</p>}
       <input
+        className="input"
         value={className}
         onChange={(e) => setClassName(e.target.value)}
         disabled={!isNew}
         required
         placeholder="כיתה"
       />
-      {errors.className && <p style={{ color: "red" }}>{errors.className}</p>}
+      {errors.className && <p className="error-text">{errors.className}</p>}
       {isNew && (
-        <div>
-          <label>
+        <div className="radio-group">
+          <label className="radio-item">
             <input
               type="radio"
               name="userType"
@@ -86,7 +90,7 @@ function UserForm({ user, id }) {
             תלמיד
           </label>
 
-          <label>
+          <label className="radio-item"> 
             <input
               type="radio"
               name="userType"
@@ -101,15 +105,16 @@ function UserForm({ user, id }) {
           </label>
         </div>
       )}
-      {errors.userType && <p style={{ color: "red" }}>{errors.userType}</p>}
+      {errors.userType && <p className="error-text">{errors.userType}</p>}
 
       {isNew && !createdUser && (
-        <button onClick={handleSubmit}>
+        <button className="button" 
+         onClick={handleSubmit}>
           עדכון
         </button>
       )}
       {createdUser && (
-        <p style={{ color: "green" }}> המשתמש נשמר בהצלחה </p>
+        <p className="success-text" > המשתמש נשמר בהצלחה </p>
       )}
       {(createdUser?.type === "teacher" || user?.type === "teacher") && (
         <TeacherDashboard className={createdUser?.className || user?.className} />

@@ -3,6 +3,7 @@ import { getStudents } from "../services/studentService";
 import { getTeachers } from "../services/teacherService";
 import { getStudentsByClass } from "../services/studentService";
 import UserList from "./UserList";
+import "../App.css";
 
 function TeacherDashboard({ className }) {
   const [selectedOption, setSelectedOption] = useState("");
@@ -25,44 +26,46 @@ function TeacherDashboard({ className }) {
   };
 
   return (
-    <div>
-      <h3>בחירת רשימה להצגה</h3>
+    <div className="dashboard-container">
+      <h3 className="title">בחירת רשימה להצגה</h3>
 
-      <label>
-        <input
-          type="radio"
-          name="listType"
-          value="allStudents"
-          checked={selectedOption === "allStudents"}
-          onChange={(e) => handleChange(e.target.value)}
-        />
-        כל התלמידים
-      </label>
+      <div className="radio-group">
+        <label className="radio-item">
+          <input
+            type="radio"
+            name="listType"
+            value="allStudents"
+            checked={selectedOption === "allStudents"}
+            onChange={(e) => handleChange(e.target.value)}
+          />
+          כל התלמידים
+        </label>
 
-      <label>
-        <input
-          type="radio"
-          name="listType"
-          value="allTeachers"
-          checked={selectedOption === "allTeachers"}
-          onChange={(e) => handleChange(e.target.value)}
-        />
-        כל המורים
-      </label>
+        <label className="radio-item">
+          <input
+            type="radio"
+            name="listType"
+            value="allTeachers"
+            checked={selectedOption === "allTeachers"}
+            onChange={(e) => handleChange(e.target.value)}
+          />
+          כל המורים
+        </label>
 
-      <label>
-        <input
-          type="radio"
-          name="listType"
-          value="classStudents"
-          checked={selectedOption === "classStudents"}
-          onChange={(e) => handleChange(e.target.value)}
-        />
-        תלמידים בכיתה שלי
-      </label>
+        <label className="radio-item">
+          <input
+            type="radio"
+            name="listType"
+            value="classStudents"
+            checked={selectedOption === "classStudents"}
+            onChange={(e) => handleChange(e.target.value)}
+          />
+          תלמידים בכיתה שלי
+        </label>
+      </div>
 
       {users?.length > 0 && <UserList users={users} />}
-      
+
     </div>
   );
 }

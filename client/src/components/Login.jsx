@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getTeachersById } from "../services/teacherService";
 import { getStudentsById } from "../services/studentService";
 import UserForm from "./UserForm";
-
+import "../App.css";
 
 function Login() {
   const [id, setId] = useState("");
@@ -34,10 +34,13 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="login-container">
+      <h3 className="title">מערכת רישום לטיול </h3>
+
       {user === undefined && (
         <>
           <input
+            className="input"
             type="text"
             placeholder="תעודת זהות"
             value={id}
@@ -56,17 +59,17 @@ function Login() {
               }
             }}
           />
-          <button
+          <button className="button"
             onClick={handleLogin}
             disabled={id.length !== 9}
           >
             כניסה
           </button>
-          {idError && <p style={{ color: "red" }}>{idError}</p>}
+          {idError && <p className="error-text">{idError}</p>}
         </>
       )}
 
-      {loading && <p>טוען...</p>}
+      {loading && <p className="loading-text">טוען...</p>}
 
       {user !== undefined && !loading && (
         <UserForm
