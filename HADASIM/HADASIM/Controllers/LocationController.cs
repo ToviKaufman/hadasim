@@ -1,5 +1,7 @@
 ﻿using BL.DTOs;
+using BL.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HADASIM.Controllers
 {
@@ -7,6 +9,14 @@ namespace HADASIM.Controllers
     [Route("api/[controller]")]
     public class LocationController : ControllerBase
     {
+        private readonly IHubContext<LocationHub> _hubContext;
+        private readonly IStudentService _studentService;
+      
+        public LocationController(IStudentService service, IHubContext<LocationHub> hubContext)
+        {
+            _studentService = service;
+            _hubContext = hubContext;
+        }
         private static List<object> _locations = new();
 
         public static double ConvertToDecimal(DmsDTO dms)
@@ -14,9 +24,17 @@ namespace HADASIM.Controllers
             return dms.Degrees + (dms.Minutes / 60.0) + (dms.Seconds / 3600.0);
         }
 
+       
         [HttpPost]
-        public IActionResult AddLocation(LocationDTO dto)
+        public async Task<IActionResult> AddLocation(LocationDTO dto)
         {
+
+            var student = await _studentService.GetById(dto.ID);
+            if (student == null) 
+            {
+                return NotFound("Student not found");
+            }
+
             var lat = ConvertToDecimal(dto.Coordinates.Latitude);
             var lng = ConvertToDecimal(dto.Coordinates.Longitude);
 
@@ -31,13 +49,15 @@ namespace HADASIM.Controllers
             _locations.RemoveAll(x => ((dynamic)x).id == dto.ID);
             _locations.Add(location);
 
-            return Ok(location);
+            await _hubContext.Clients.All.SendAsync("ReceiveLocation", location);
+
+            return Ok();
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_locations);
+             return  Ok(_locations);
         }
     }
 }
