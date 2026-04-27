@@ -1,19 +1,25 @@
-import { useState } from "react";
-import Login from "./components/Login";
-import MapPage from "./components/MapPage";
+
+import MapPage from "./pages/MapPage";
+import DashboardPage from "./pages/DashboardPage";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import { UserProvider } from "./components/UserContext";
+import MapButton from "./components/MapButton";
 
 function App() {
-  const [screen, setScreen] = useState("login"); 
-  return (
-    <div>
-     {screen === "login" && (
-        <Login onShowMap={() => setScreen("map")} />
-      )}
 
-      {screen === "map" && (
-        <MapPage />
-      )}
-    </div>
+  return (
+    <UserProvider>
+      <BrowserRouter>
+        <MapButton />
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/map" element={<MapPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 export default App;

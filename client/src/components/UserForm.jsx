@@ -3,12 +3,14 @@ import { addTeacher } from "../services/teacherService";
 import { addStudent } from "../services/studentService";
 import TeacherDashboard from "./TeacherDashboard";
 import "../App.css";
+import { useUser } from "./UserContext";
 
 
 
-function UserForm({ user, id }) {
-  const isNew = !user;
 
+function UserForm() {
+  const { user , setUser} = useUser();
+  const isNew = !user?.fullName;
   const [name, setName] = useState(user?.fullName || "");
   const [className, setClassName] = useState(user?.className || "");
   const [errors, setErrors] = useState({});
@@ -32,7 +34,7 @@ function UserForm({ user, id }) {
     if (Object.keys(newErrors).length > 0) return;
 
     const data = {
-      id,
+      id: user.id,
       fullName: name,
       className: className,
     };
@@ -44,6 +46,7 @@ function UserForm({ user, id }) {
         await addStudent(data);
       }
       setCreatedUser({ ...data, type: userType });
+      setUser({ ...data, type: userType })
     } catch (err) {
       setCreatedUser(null);
       alert("השמירה נכשלה");
@@ -52,9 +55,9 @@ function UserForm({ user, id }) {
 
   return (
     <div className="form-container">
-      <h3 className="title">{isNew ? "רישום" :  "פרטי משתמש"}</h3>
+      <h3 className="title">{isNew ? "רישום" : "פרטי משתמש"}</h3>
 
-      <input className="input" value={id} disabled />
+      <input className="input" value={user?.id} disabled />
 
       <input
         className="input"
@@ -90,7 +93,7 @@ function UserForm({ user, id }) {
             תלמיד
           </label>
 
-          <label className="radio-item"> 
+          <label className="radio-item">
             <input
               type="radio"
               name="userType"
@@ -108,16 +111,13 @@ function UserForm({ user, id }) {
       {errors.userType && <p className="error-text">{errors.userType}</p>}
 
       {isNew && !createdUser && (
-        <button className="button" 
-         onClick={handleSubmit}>
+        <button className="button"
+          onClick={handleSubmit}>
           עדכון
         </button>
       )}
       {createdUser && (
         <p className="success-text" > המשתמש נשמר בהצלחה </p>
-      )}
-      {(createdUser?.type === "teacher" || user?.type === "teacher") && (
-        <TeacherDashboard className={createdUser?.className || user?.className} />
       )}
     </div>
   );

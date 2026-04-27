@@ -3,14 +3,16 @@ import { getTeachersById } from "../services/teacherService";
 import { getStudentsById } from "../services/studentService";
 import UserForm from "./UserForm";
 import "../App.css";
+import { useUser } from "./UserContext";
 
-function Login({ onShowMap }) {
+function Login({ }) {
   const [id, setId] = useState("");
-  const [user, setUser] = useState(undefined);
   const [loading, setLoading] = useState(false);
-  const [idError, setIdError] = useState("");
+  const { setUser } = useUser();
 
-  const handleLogin = async () => {
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setLoading(true);
 
     try {
@@ -24,7 +26,7 @@ function Login({ onShowMap }) {
       } else if (student) {
         setUser({ ...student, type: "student" });
       } else {
-        setUser(null);
+        setUser({ id });
       }
     } catch (error) {
       console.error("error:", error);
@@ -37,53 +39,24 @@ function Login({ onShowMap }) {
     <div className="login-container">
       <h3 className="title">מערכת רישום לטיול </h3>
 
-      {user === undefined && (
-        <>
-          <input
-            className="input"
-            type="text"
-            placeholder="תעודת זהות"
-            value={id}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (!/^\d*$/.test(value)) {
-                setIdError("תעודת זהות יכולה להכיל רק ספרות");
-                return;
-              }
-              setId(value);
-              if (value.length > 9) return;
-              if (value.length > 0 && value.length < 9) {
-                setIdError("תעודת זהות חייבת להכיל 9 ספרות");
-              } else {
-                setIdError("");
-              }
-            }}
-          />
-          <button className="button"
-            onClick={handleLogin}
-            disabled={id.length !== 9}
-          >
-            כניסה
-          </button>
-          {idError && <p className="error-text">{idError}</p>}
-        </>
-      )}
+
+      <form onSubmit={handleLogin}>
+        <input
+          className="input"
+          type="text"
+          inputMode="numeric"
+          pattern="\d{9}"
+          maxLength={9}
+          required
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
+
+        <button className="button" type="submit" >כניסה</button>
+      </form>
 
       {loading && <p className="loading-text">טוען...</p>}
 
-      {user !== undefined && !loading && (
-        <UserForm
-          user={user}
-          id={id}
-        />
-      )}
-
-      <button
-        className="button"
-        onClick={onShowMap}
-      >
-        צפייה במפה
-      </button>
     </div>
   );
 }
