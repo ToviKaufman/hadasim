@@ -1,34 +1,80 @@
-import { useEffect } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { sendLocation } from "../services/LocationService";
+import { getStudents } from "../services/studentService";
+
+
+
 
 function LocationSimulator() {
 
-    
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const fakeLocation = {
-        id: "123456789",
-        coordinates: {
-          latitude: {
-            degrees: 31,
-            minutes: 46,
-            seconds: 40
-          },
-          longitude: {
-            degrees: 35,
-            minutes: 13,
-            seconds: 45
-          }
-        },
-        time: new Date().toISOString()
-      };
+  const [students, setStudents] = useState([]);
+  const baseLat = { degrees: 31, minutes: 46, seconds: 0 };
+  const baseLon = { degrees: 35, minutes: 13, seconds: 0 };
 
-      axios.post("https://localhost:5001/api/location", fakeLocation);
-    }, 5000); 
-    return () => clearInterval(interval);
+  useEffect(() => {
+    const fetchStudents = async () => {
+      const data = await getStudents();
+      setStudents(data);
+    };
+
+    fetchStudents();
   }, []);
 
-  return null;
-}
+  function randomSecondsOffset(max = 30) {
+    return Math.floor((Math.random() - 0.5) * 2 * max);
+  }
 
+  function normalizeDms(dms) {
+    let { degrees, minutes, seconds } = dms;
+
+    minutes += Math.floor(seconds / 60);
+    seconds = seconds % 60;
+
+    if (seconds < 0) {
+      seconds += 60;
+      minutes -= 1;
+    }
+
+    degrees += Math.floor(minutes / 60);
+    minutes = minutes % 60;
+
+    if (minutes < 0) {
+      minutes += 60;
+      degrees -= 1;
+    }
+
+    return { degrees, minutes, seconds };
+  }
+
+  function getRandomDms(base) {
+    const noisy = {
+      degrees: base.degrees,
+      minutes: base.minutes,
+      seconds: base.seconds + randomSecondsOffset(45)
+    };
+
+    return normalizeDms(noisy);
+  }
+
+  useEffect(() => {
+    if (students.length === 0) return;
+    const interval = setInterval(() => {
+      students.forEach((student) => {
+        const fakeLocation = {
+          id: student.id,
+          coordinates: {
+            latitude: getRandomDms(baseLat),
+            longitude: getRandomDms(baseLon),
+          },
+          time: new Date().toISOString()
+        };
+
+        sendLocation(fakeLocation);
+      });
+    },5000);
+
+    return () => clearInterval(interval);
+  }, [students]);
+
+}
 export default LocationSimulator;

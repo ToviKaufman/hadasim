@@ -2,7 +2,7 @@ import api from "./api";
 import { Student } from "../models/Student";
 
 export const getStudents = async () => {
-  const res = await api.get("/Students");
+  const res = await api.get("/students");
 
   return res?.data?.map?.(Student);
 };
@@ -18,7 +18,7 @@ export const getStudentsByClass = async (className) => {
  return res?.data?.map?.(Student);
 };
 export const addStudent = async (student) => {
-  const res = await api.post("/Students", student);
+  const res = await api.post("/students", student);
 
   return Student(res.data);
 };

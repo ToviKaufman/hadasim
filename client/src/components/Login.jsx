@@ -4,7 +4,7 @@ import { getStudentsById } from "../services/studentService";
 import UserForm from "./UserForm";
 import "../App.css";
 
-function Login() {
+function Login({ onShowMap }) {
   const [id, setId] = useState("");
   const [user, setUser] = useState(undefined);
   const [loading, setLoading] = useState(false);
@@ -77,6 +77,13 @@ function Login() {
           id={id}
         />
       )}
+
+      <button
+        className="button"
+        onClick={onShowMap}
+      >
+        צפייה במפה
+      </button>
     </div>
   );
 }

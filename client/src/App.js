@@ -1,12 +1,18 @@
 import { useState } from "react";
 import Login from "./components/Login";
-import MapPage from "./services/MapPage";
+import MapPage from "./components/MapPage";
 
 function App() {
+  const [screen, setScreen] = useState("login"); 
   return (
     <div>
-      <Login></Login>
-      <MapPage></MapPage>
+     {screen === "login" && (
+        <Login onShowMap={() => setScreen("map")} />
+      )}
+
+      {screen === "map" && (
+        <MapPage />
+      )}
     </div>
   );
 }
