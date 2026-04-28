@@ -40,7 +40,7 @@ function Login({ }) {
       <h3 className="title">מערכת רישום לטיול </h3>
 
 
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} className="form-container">
         <input
           className="input"
           type="text"

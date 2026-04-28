@@ -9,11 +9,13 @@ function MapButton() {
   }
 
   return (
+     <div className="map-button-wrapper">
     <button className="button"
       onClick={() => navigate("/map")}
     >
       צפייה במפה
     </button>
+    </div>
   );
 }
 

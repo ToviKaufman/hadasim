@@ -9,29 +9,16 @@ import { useUser } from "./UserContext";
 
 
 function UserForm() {
-  const { user , setUser} = useUser();
+  const { user, setUser } = useUser();
   const isNew = !user?.fullName;
   const [name, setName] = useState(user?.fullName || "");
   const [className, setClassName] = useState(user?.className || "");
-  const [errors, setErrors] = useState({});
   const [userType, setUserType] = useState(user?.type || "");
   const [createdUser, setCreatedUser] = useState(null);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
 
-    const newErrors = {};
-
-    if (!name.trim()) {
-      newErrors.name = "שם הוא שדה חובה";
-    }
-    if (!className.trim()) {
-      newErrors.className = "כיתה היא שדה חובה";
-    }
-    if (!userType) {
-      newErrors.userType = "חובה לבחור תלמיד או מורה";
-    }
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) return;
+    e.preventDefault();
 
     const data = {
       id: user.id,
@@ -53,8 +40,10 @@ function UserForm() {
     }
   };
 
+
+
   return (
-    <div className="form-container">
+    <form className="form-container" onSubmit={handleSubmit}>
       <h3 className="title">{isNew ? "רישום" : "פרטי משתמש"}</h3>
 
       <input className="input" value={user?.id} disabled />
@@ -65,9 +54,10 @@ function UserForm() {
         onChange={(e) => setName(e.target.value)}
         disabled={!isNew}
         required
+        minLength={2}
         placeholder="שם מלא"
       />
-      {errors.name && <p className="error-text">{errors.name}</p>}
+
       <input
         className="input"
         value={className}
@@ -76,7 +66,6 @@ function UserForm() {
         required
         placeholder="כיתה"
       />
-      {errors.className && <p className="error-text">{errors.className}</p>}
       {isNew && (
         <div className="radio-group">
           <label className="radio-item">
@@ -85,10 +74,8 @@ function UserForm() {
               name="userType"
               value="student"
               checked={userType === "student"}
-              onChange={(e) => {
-                console.log(e.target.value);
-                setUserType(e.target.value);
-              }}
+              onChange={(e) => setUserType(e.target.value)}
+              required
             />
             תלמיד
           </label>
@@ -99,27 +86,23 @@ function UserForm() {
               name="userType"
               value="teacher"
               checked={userType === "teacher"}
-              onChange={(e) => {
-                console.log(e.target.value);
-                setUserType(e.target.value);
-              }}
+              onChange={(e) => setUserType(e.target.value)}
+              required
             />
             מורה
           </label>
         </div>
       )}
-      {errors.userType && <p className="error-text">{errors.userType}</p>}
 
-      {isNew && !createdUser && (
-        <button className="button"
-          onClick={handleSubmit}>
+       {isNew && !createdUser && (
+        <button className="button" type="submit">
           עדכון
         </button>
       )}
       {createdUser && (
         <p className="success-text" > המשתמש נשמר בהצלחה </p>
       )}
-    </div>
+     </form>
   );
 }
 

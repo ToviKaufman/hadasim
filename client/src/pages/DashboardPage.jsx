@@ -10,7 +10,7 @@ function DashboardPage() {
     const { user } = useUser();
 
     return (
-        <div>
+        <div  className="dashboard-layout">
             <UserForm/>
 
             {user?.type === "teacher" && (

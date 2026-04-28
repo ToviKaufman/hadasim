@@ -5,6 +5,7 @@ import { getStudentsByClass } from "../services/studentService";
 import UserList from "./UserList";
 import "../App.css";
 
+// האם לא צריך להשתמש כאן בקונטקסט במקום בסטייט?
 function TeacherDashboard({ className }) {
   const [selectedOption, setSelectedOption] = useState("");
   const [users, setUsers] = useState([]);
@@ -63,6 +64,7 @@ function TeacherDashboard({ className }) {
           תלמידים בכיתה שלי
         </label>
       </div>
+      {/* האם לא צריך להשתמש כאן הuserContext ואז לא לשלוח את ה users כפרופס? */}
 
       {users?.length > 0 && <UserList users={users} />}
 
