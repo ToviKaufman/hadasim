@@ -11,10 +11,13 @@ namespace HADASIM.Controllers
     {
         private readonly IHubContext<LocationHub> _hubContext;
         private readonly IStudentService _studentService;
-      
-        public LocationController(IStudentService service, IHubContext<LocationHub> hubContext)
+        private readonly ITeacherService _teacheService;
+
+        public LocationController(IStudentService studentService, ITeacherService teacheService, IHubContext<LocationHub> hubContext)
         {
-            _studentService = service;
+            _studentService = studentService;
+            _teacheService = teacheService;
+
             _hubContext = hubContext;
         }
         private static List<object> _locations = new();
@@ -30,9 +33,11 @@ namespace HADASIM.Controllers
         {
 
             var student = await _studentService.GetById(dto.ID);
-            if (student == null) 
+            if (student == null)
             {
-                return NotFound("Student not found");
+                var teacher = await _teacheService.GetById(dto.ID);
+                if (teacher == null)
+                     return NotFound("User not found");
             }
 
             var lat = ConvertToDecimal(dto.Coordinates.Latitude);

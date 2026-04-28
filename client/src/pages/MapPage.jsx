@@ -1,14 +1,12 @@
 import { useState } from "react";
-import Login from "../components/Login";
-import UserForm from "../components/UserForm";
-import Map from "../components/Map";
+import MapView from "../components/MapView";
 
 function MapPage() {
     
 
     return (
         <div>
-        <Map/>
+        <MapView/>
         </div>
     );
 }

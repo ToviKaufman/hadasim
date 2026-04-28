@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Login from "../components/Login";
 import UserForm from "../components/UserForm";
-import { useUser } from "../components/UserContext";
+import { useUser } from "../contexts/UserContext";
 import TeacherDashboard from "../components/TeacherDashboard";
 
 
@@ -14,7 +14,7 @@ function DashboardPage() {
             <UserForm/>
 
             {user?.type === "teacher" && (
-                <TeacherDashboard  />
+                <TeacherDashboard className={user.className} />
             )}
 
         </div>

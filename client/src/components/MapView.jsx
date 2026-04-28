@@ -4,6 +4,7 @@ import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import icon2x from "leaflet/dist/images/marker-icon-2x.png";
 import shadow from "leaflet/dist/images/marker-shadow.png";
+import { useLocations } from "../contexts/LocationsContext";
 
 const defaultIcon = L.icon({
   iconUrl: icon,
@@ -11,7 +12,9 @@ const defaultIcon = L.icon({
   shadowUrl: shadow,
 });
 
-function MapView({ locations }) {
+function MapView() {
+  const { locations } = useLocations();
+  
   return (
     <MapContainer center={[31.7683, 35.2137]} zoom={11} style={{ height: "500px" }}>
       <TileLayer

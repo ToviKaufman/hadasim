@@ -8,6 +8,7 @@ import { getTeachers } from "./TeacherService";
 
 function LocationSimulator() {
 
+  const [students, setStudents] = useState([]);
   const [users, setUsers] = useState([]);
 
   const baseLat = { degrees: 31, minutes: 46, seconds: 0 };
@@ -59,11 +60,11 @@ function LocationSimulator() {
   }
 
   useEffect(() => {
-    if (users.length === 0) return;
+    if (students.length === 0) return;
     const interval = setInterval(() => {
-      users.forEach((user) => {
+      students.forEach((student) => {
         const fakeLocation = {
-          id: user.id,
+          id: student.id,
           coordinates: {
             latitude: getRandomDms(baseLat),
             longitude: getRandomDms(baseLon),
@@ -76,7 +77,7 @@ function LocationSimulator() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [users]);
+  }, [students]);
 
 }
 export default LocationSimulator;

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { addTeacher } from "../services/teacherService";
-import { addStudent } from "../services/studentService";
+import { addTeacher } from "../services/TeacherService";
+import { addStudent } from "../services/StudentService";
 import TeacherDashboard from "./TeacherDashboard";
 import "../App.css";
-import { useUser } from "./UserContext";
+import { useUser } from "../contexts/UserContext";
 
 
 

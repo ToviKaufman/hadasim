@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Login from "../components/Login";
 import UserForm from "../components/UserForm";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../components/UserContext";
+import { useUser } from "../contexts/UserContext";
 
 
 function LoginPage() {
