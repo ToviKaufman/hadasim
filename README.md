@@ -1,4 +1,4 @@
-📌 README – Trip Tracking System
+ README – Trip Tracking System
  תיאור כללי
 מערכת לניהול ומעקב אחר טיול תלמידות בזמן אמת.
 
