@@ -1,5 +1,5 @@
  
-# Trip Tracking System
+# מערכת לניהול טיול שנתי
 
 ## תיאור הפרויקט
 מערכת לניהול ומעקב אחר טיול תלמידות בזמן אמת.
@@ -138,7 +138,7 @@ appsettings.json
 
 Connection String:
 "ConnectionStrings": {
-  "DefaultConnection": "Server=YOUR_SERVER;Database=TripDB;Trusted_Connection=True;"
+  "DefaultConnection": "Server=YOUR_SERVER;Database=SchoolDB;Trusted_Connection=True;TrustServerCertificate=True"
 }
 הרצת מיגרציות:
 Update-Database  
