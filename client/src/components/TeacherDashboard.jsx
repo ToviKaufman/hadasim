@@ -5,20 +5,20 @@ import { getStudentsByClass } from "../services/StudentService";
 import UserList from "./UserList";
 import "../App.css";
 import TeacherMapView from "./TeacherMapView";
-import { getLocations } from "../services/LocationService";
+import { useUser } from "../contexts/UserContext";
+import TeacherDashboardViewType from "../enums/TeacherDashboardViewType";
 
-// האם לא צריך להשתמש כאן בקונטקסט במקום בסטייט?
-function TeacherDashboard({ className }) {
+function TeacherDashboard() {
+  const { user } = useUser();
   const [selectedOption, setSelectedOption] = useState("");
   const [users, setUsers] = useState([]);
   const [studentsByClass, setStudentsByClass] = useState();
 
   useEffect(() => {
     const fetchStudentsByClass = async () => { 
-      const students = await getStudentsByClass(className); 
+      const students = await getStudentsByClass(user.className); 
       setStudentsByClass(students);
       }
-
 
     fetchStudentsByClass();
   }, []);
@@ -28,11 +28,11 @@ function TeacherDashboard({ className }) {
 
     let data = [];
 
-    if (value === "allStudents") {
+    if (value === TeacherDashboardViewType.allStudents) {
       data = await getStudents();
-    } else if (value === "allTeachers") {
+    } else if (value === TeacherDashboardViewType.teachers) {
       data = await getTeachers();
-    } else if (value === "classStudents") {
+    } else if (value === TeacherDashboardViewType.myStudents) {
       data = studentsByClass;
     }
 
@@ -49,8 +49,8 @@ function TeacherDashboard({ className }) {
           <input
             type="radio"
             name="listType"
-            value="allStudents"
-            checked={selectedOption === "allStudents"}
+            value={TeacherDashboardViewType.allStudents}
+            checked={selectedOption === TeacherDashboardViewType.allStudents}
             onChange={(e) => handleChange(e.target.value)}
           />
           כל התלמידים
@@ -60,8 +60,8 @@ function TeacherDashboard({ className }) {
           <input
             type="radio"
             name="listType"
-            value="allTeachers"
-            checked={selectedOption === "allTeachers"}
+            value={TeacherDashboardViewType.teachers}
+            checked={selectedOption === TeacherDashboardViewType.teachers}
             onChange={(e) => handleChange(e.target.value)}
           />
           כל המורים
@@ -71,18 +71,15 @@ function TeacherDashboard({ className }) {
           <input
             type="radio"
             name="listType"
-            value="classStudents"
-            checked={selectedOption === "classStudents"}
+            value={TeacherDashboardViewType.myStudents}
+            checked={selectedOption === TeacherDashboardViewType.myStudents}
             onChange={(e) => handleChange(e.target.value)}
           />
           תלמידים בכיתה שלי
         </label>
       </div>
-      {/* האם לא צריך להשתמש כאן הuserContext ואז לא לשלוח את ה users כפרופס? */}
 
       {users?.length > 0 && <UserList users={users} />}
-
-     
 
       <TeacherMapView students={studentsByClass}/>
 

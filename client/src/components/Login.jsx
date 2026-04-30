@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { getTeachersById } from "../services/TeacherService";
-import { getStudentsById } from "../services/StudentService";
-import UserForm from "./UserForm";
+import { getTeacherById } from "../services/TeacherService";
+import { getStudentById } from "../services/StudentService";
 import "../App.css";
 import { useUser } from "../contexts/UserContext";
+import UserType from "../enums/UserType";
 
-function Login({ }) {
-  const [id, setId] = useState("141414141");
+function Login() {
+  const [id, setId] = useState();
   const [loading, setLoading] = useState(false);
   const { setUser } = useUser();
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,14 +16,14 @@ function Login({ }) {
 
     try {
       const [teacher, student] = await Promise.all([
-        getTeachersById(id),
-        getStudentsById(id),
+        getTeacherById(id),
+        getStudentById(id),
       ]);
 
       if (teacher) {
-        setUser({ ...teacher, type: "teacher" });
+        setUser({ ...teacher, type: UserType.teacher });
       } else if (student) {
-        setUser({ ...student, type: "student" });
+        setUser({ ...student, type: UserType.student });
       } else {
         setUser({ id });
       }
@@ -38,8 +37,6 @@ function Login({ }) {
   return (
     <div className="login-container">
       <h3 className="title">מערכת רישום לטיול </h3>
-
-
       <form onSubmit={handleLogin} className="form-container">
         <input
           className="input"

@@ -5,7 +5,7 @@ export function calcDistance(location1, location2) {
 
     let lat1 = location1.latitude;
     let lat2 = location2.latitude
-    const R = 6371; // km
+    const R = 6371; 
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(location2.longitude - location1.longitude);
      lat1 = toRad(lat1);

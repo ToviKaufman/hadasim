@@ -3,9 +3,6 @@ import { sendLocation } from "./LocationService";
 import { getStudents } from "./StudentService";
 import { getTeachers } from "./TeacherService";
 
-
-
-
 function LocationSimulator() {
 
   const [users, setUsers] = useState([]);

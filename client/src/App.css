@@ -75,10 +75,6 @@
   color: red;
   margin-top: 10px;
 }
-.success-text {
-  color: green;
-  margin-top: 10px;
-}
 .loading-text {
   font-size: 18px;
   color: #555;
@@ -104,4 +100,7 @@
   margin-top: 2%;
   transform: translateX(-50%);
   z-index: 1000;
+}
+.map-container{
+  width: 100%;
 }

@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage";
 import { UserProvider } from "./contexts/UserContext";
 import { LocationsProvider } from "./contexts/LocationsContext";
 import MapButton from "./components/MapButton";
-import { calcDistance } from "./services/MapService";
 import LocationSimulator from "./services/LocationSimulator";
 
 
@@ -16,8 +15,7 @@ function App() {
     <LocationsProvider>
     <UserProvider>
       <BrowserRouter>
-              <LocationSimulator/>
-
+        <LocationSimulator/>
         <MapButton />
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />

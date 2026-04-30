@@ -5,7 +5,6 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import icon2x from "leaflet/dist/images/marker-icon-2x.png";
 import shadow from "leaflet/dist/images/marker-shadow.png";
 import { useUser } from "../contexts/UserContext";
-import { getLocations } from "../services/LocationService";
 import { useEffect, useState } from "react";
 import { calcDistance } from "../services/MapService";
 import { useLocations } from "../contexts/LocationsContext";
@@ -48,11 +47,11 @@ function TeacherMapView({ students }) {
         setCorrectLocations(studentsDistanceList?.filter(item => item.distance < 3) || []);
     }, [locations]);
 
-    if (!students || students.length === 0) {
+    if (!students?.length > 0) {
         return <p>אין למורה תלמידות</p>;
     }
     return (
-        <div style={{ width: "100%" }}>
+        <div className="map-container">
 
             <MapContainer center={[31.7683, 35.2137]} zoom={11} style={{ height: "500px" }}>
                 <TileLayer
@@ -76,7 +75,6 @@ function TeacherMapView({ students }) {
                         <Tooltip
                             permanent
                             direction="top"
-
                             offset={[0, 0]}
                         >
                             ת"ז: {loc.id}
@@ -89,7 +87,6 @@ function TeacherMapView({ students }) {
                         permanent
                         direction="top"
                         offset={[0, 0]}
-
                     >
                         מורה
                     </Tooltip>
