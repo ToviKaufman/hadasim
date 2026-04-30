@@ -1,4 +1,4 @@
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { getStudents } from "../services/StudentService";
 import { getTeachers } from "../services/TeacherService";
 import { getStudentsByClass } from "../services/StudentService";
@@ -7,17 +7,19 @@ import "../App.css";
 import TeacherMapView from "./TeacherMapView";
 import { useUser } from "../contexts/UserContext";
 import TeacherDashboardViewType from "../enums/TeacherDashboardViewType";
+import UserType from "../enums/UserType";
 
-function TeacherDashboard({setStudentsByClass }) {  
+function TeacherDashboard() {
   const { user } = useUser();
   const [selectedOption, setSelectedOption] = useState("");
   const [users, setUsers] = useState([]);
+  const [studentsByClass, setStudentsByClass] = useState([]);
 
   useEffect(() => {
-    const fetchStudentsByClass = async () => { 
-      const students = await getStudentsByClass(user.className); 
+    const fetchStudentsByClass = async () => {
+      const students = await getStudentsByClass(user.className);
       setStudentsByClass(students);
-      }
+    }
 
     fetchStudentsByClass();
   }, []);
@@ -32,8 +34,7 @@ function TeacherDashboard({setStudentsByClass }) {
     } else if (value === TeacherDashboardViewType.teachers) {
       data = await getTeachers();
     } else if (value === TeacherDashboardViewType.myStudents) {
-       data = await getStudentsByClass(user.className);
-      setStudentsByClass(data); 
+      data = studentsByClass
     }
 
     setUsers(data);
@@ -42,6 +43,7 @@ function TeacherDashboard({setStudentsByClass }) {
 
   return (
     <div className="dashboard-container">
+      <div className="user-list-container">
       <h3 className="title">בחירת רשימה להצגה</h3>
 
       <div className="radio-group">
@@ -80,8 +82,10 @@ function TeacherDashboard({setStudentsByClass }) {
       </div>
 
       {users?.length > 0 && <UserList users={users} />}
-
-
+</div>
+      {user?.type === UserType.teacher && (
+        <TeacherMapView students={studentsByClass} />
+      )}
     </div>
   );
 }

@@ -9,17 +9,15 @@ import TeacherMapView from "../components/TeacherMapView";
 
 function DashboardPage() {
     const { user } = useUser();
-     const [studentsByClass, setStudentsByClass] = useState([]);
+     
     if (!user) return <Navigate to="/login" />;
     return (
         <div  className="dashboard-layout">
             <UserForm/>
             {user?.type === UserType.teacher && (
-                <TeacherDashboard setStudentsByClass={setStudentsByClass} />
+                <TeacherDashboard  />
             )}
-                {user?.type === UserType.teacher && (
-                <TeacherMapView students={studentsByClass} />
-            )}
+                
         </div>
     );
 }

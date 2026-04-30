@@ -10,7 +10,7 @@
 
 .dashboard-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   margin-top: 40px;
   font-family: Arial, sans-serif;
@@ -124,4 +124,12 @@
 
 .map-container {
   width: 500px;
+}
+.user-list-container{
+      padding: 10px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 500px;
 }
