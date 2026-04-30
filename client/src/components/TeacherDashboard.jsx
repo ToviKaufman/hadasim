@@ -8,11 +8,10 @@ import TeacherMapView from "./TeacherMapView";
 import { useUser } from "../contexts/UserContext";
 import TeacherDashboardViewType from "../enums/TeacherDashboardViewType";
 
-function TeacherDashboard() {
+function TeacherDashboard({setStudentsByClass }) {
   const { user } = useUser();
   const [selectedOption, setSelectedOption] = useState("");
   const [users, setUsers] = useState([]);
-  const [studentsByClass, setStudentsByClass] = useState();
 
   useEffect(() => {
     const fetchStudentsByClass = async () => { 
@@ -33,7 +32,8 @@ function TeacherDashboard() {
     } else if (value === TeacherDashboardViewType.teachers) {
       data = await getTeachers();
     } else if (value === TeacherDashboardViewType.myStudents) {
-      data = studentsByClass;
+       data = await getStudentsByClass(user.className);
+      setStudentsByClass(data); 
     }
 
     setUsers(data);
@@ -81,7 +81,6 @@ function TeacherDashboard() {
 
       {users?.length > 0 && <UserList users={users} />}
 
-      <TeacherMapView students={studentsByClass}/>
 
     </div>
   );
