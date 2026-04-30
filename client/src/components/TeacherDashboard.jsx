@@ -8,7 +8,7 @@ import TeacherMapView from "./TeacherMapView";
 import { useUser } from "../contexts/UserContext";
 import TeacherDashboardViewType from "../enums/TeacherDashboardViewType";
 
-function TeacherDashboard({setStudentsByClass }) {
+function TeacherDashboard({setStudentsByClass }) {  
   const { user } = useUser();
   const [selectedOption, setSelectedOption] = useState("");
   const [users, setUsers] = useState([]);
