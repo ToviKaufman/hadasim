@@ -1,3 +1,4 @@
+using BL.Hubs;
 using BL.Services;
 using DAL.Data;
 using DAL.Repositories;
@@ -18,9 +19,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITeacherRepo, TeacherRepo>();
 builder.Services.AddScoped<IStudentRepo, StudentRepo>();
+builder.Services.AddScoped<ILocationRepo, LocationRepo>();
+
 
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 
 
 builder.Services.AddCors(options =>
